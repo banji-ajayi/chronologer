@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.transaction.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +21,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@SpringBootTest
+@Transactional
+@SpringBootTest(classes = ChronologerApplication.class)
 class ChronologerApplicationTests {
 
 	@Autowired
@@ -84,6 +86,7 @@ class ChronologerApplicationTests {
 
 		PetDTO petDTO = createPetDTO();
 		petDTO.setOwnerId(newCustomer.getId());
+
 		PetDTO newPet = petController.savePet(petDTO);
 		petDTO.setType(PetType.DOG);
 		petDTO.setName("DogName");
@@ -110,7 +113,7 @@ class ChronologerApplicationTests {
 	}
 
 	@Test
-	public void testChangeEmployeeAvailability() {
+	public void testChangeEmployeeAvailability() {  //DATA NOT PERSISTING(DAYA AND SKILLS)
 		EmployeeDTO employeeDTO = createEmployeeDTO();
 		EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
 		Assertions.assertNull(emp1.getDaysAvailable());
@@ -243,7 +246,7 @@ class ChronologerApplicationTests {
 		customerDTO.setPhoneNumber("123-456-789");
 		return customerDTO;
 	}
-
+//
 	private static PetDTO createPetDTO() {
 		PetDTO petDTO = new PetDTO();
 		petDTO.setName("TestPet");

@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,16 +27,15 @@ public class PetController {
     @PostMapping
     public PetDTO savePet(@RequestBody PetDTO petDTO) {
         PetEntity pet = new PetEntity();
-        BeanUtils.copyProperties(petDTO, pet);
+        pet.setType(petDTO.getType());
+        pet.setName(petDTO.getName());
+        pet.setBirthDate(petDTO.getBirthDate());
+        pet.setNotes(petDTO.getNotes());
+
         CustomerEntity customer = customerService.findCustomerById(petDTO.getOwnerId());
-        pet.setCustomer(customer);
+        if(customer.getPets() == null) customer.setPets(new ArrayList<>());
 
-        PetEntity petSaved = petService.savePet(pet);
-        BeanUtils.copyProperties(petSaved, petDTO);
-
-        customer.getPets().add(petSaved);
-
-        return petDTO;
+        return getPetDTO(petService.savePet(pet, petDTO.getOwnerId()));
 
     }
 

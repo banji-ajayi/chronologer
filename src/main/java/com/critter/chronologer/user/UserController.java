@@ -8,6 +8,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
@@ -50,7 +51,7 @@ public class UserController {
 
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
-        return getCustomerDTO(customerService.findCustomerById(petId));
+        return getCustomerDTO(customerService.findCustomerByPetId(petId));
     }
 
 
@@ -61,21 +62,26 @@ public class UserController {
         customerDTO.setNotes(customer.getNotes());
         customerDTO.setPhoneNumber(customer.getPhoneNumber());
 
-        List<Long> petIds = customer.getPets().stream()
-                .map(PetEntity::getId)
-                .collect(Collectors.toList());
-        customerDTO.setPetIds(petIds);
+        if(customer.getPets() != null) {
+            List<Long> petIds = customer.getPets().stream()
+                    .map(PetEntity::getId)
+                    .collect(Collectors.toList());
+            customerDTO.setPetIds(petIds);
+        }
         return customerDTO;
     }
 
     @PostMapping("/employee")
     public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
         EmployeeEntity employee = new EmployeeEntity();
-        BeanUtils.copyProperties(employeeDTO, employee);
-        EmployeeEntity employeeSaved = employeeService.save(employee);
-        BeanUtils.copyProperties(employeeSaved, employeeDTO);
-
-        return employeeDTO;
+        employee.setName(employeeDTO.getName());
+        if(employeeDTO.getSkills() != null){
+            employee.setEmployeeSkills(employeeDTO.getSkills());
+        }
+        if(employeeDTO.getDaysAvailable() != null) {
+            employee.setAvailableDaysForEmployee(employeeDTO.getDaysAvailable());
+        }
+        return getEmployeeDTO(employeeService.save(employee));
     }
 
     @GetMapping("/employee/{employeeId}")
@@ -102,8 +108,12 @@ public class UserController {
         EmployeeDTO employeeDTO = new EmployeeDTO();
         employeeDTO.setId(employee.getId());
         employeeDTO.setName(employee.getName());
-        employeeDTO.setSkills(employee.getEmployeeSkills());
-        employeeDTO.setDaysAvailable(employee.getAvailableDaysForEmployee());
+        if(employee.getEmployeeSkills() != null) {
+             employeeDTO.setSkills(employee.getEmployeeSkills());
+        }
+        if(employee.getAvailableDays() != null) {
+            employeeDTO.setDaysAvailable(employee.getAvailableDays());
+        }
         return employeeDTO;
     }
 

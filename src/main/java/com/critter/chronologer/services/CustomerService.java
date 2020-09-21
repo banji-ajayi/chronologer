@@ -30,6 +30,10 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
+    public CustomerEntity findCustomerByPetId(long petId) {
+        return petRepository.getOne(petId).getCustomer();
+    }
+
     public CustomerEntity saveCustomer(CustomerEntity customer){
         return customerRepository.save(customer);
     }

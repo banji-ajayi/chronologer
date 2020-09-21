@@ -4,6 +4,7 @@ import com.critter.chronologer.exception.NotFoundException;
 import com.critter.chronologer.pet.PetEntity;
 import com.critter.chronologer.repository.CustomerRepository;
 import com.critter.chronologer.repository.PetRepository;
+import com.critter.chronologer.user.CustomerEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +31,17 @@ public class PetService {
     }
 
     public List<PetEntity> findByCustomerId(Long CustomerId) {
+
         return petRepository.getAllPetsByCustomerId(CustomerId);
     }
 
-    public PetEntity savePet(PetEntity pet) {
-        return petRepository.save(pet);
+    public PetEntity savePet(PetEntity pet, Long ownerId) {
+        CustomerEntity customer = customersRepository.getOne(ownerId);
+        pet.setCustomer(customer);
+        pet = petRepository.save(pet);
+        customer.addNewPet(pet);
+        customersRepository.save(customer);
+        return pet;
     }
 
     public List<PetEntity> findAllPetsById(List<Long> petIds) {

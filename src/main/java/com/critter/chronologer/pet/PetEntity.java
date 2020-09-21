@@ -22,9 +22,6 @@ public class PetEntity {
 
     private LocalDate birthDate;
 
-//    @ManyToOne(targetEntity = CustomerEntity.class)
-//    private CustomerEntity customer;
-
     @ManyToOne
     private CustomerEntity customer;
 

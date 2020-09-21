@@ -1,15 +1,14 @@
 package com.critter.chronologer.user;
 
-import org.hibernate.annotations.Cascade;
-
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
 
 
 @Entity
-public class EmployeeEntity {
+public class EmployeeEntity  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +19,10 @@ public class EmployeeEntity {
     @ManyToMany(mappedBy = "employees")
     private List<ScheduleEntity> schedules;
 
-    @ElementCollection
-    @JoinTable(name = "employee_skill", joinColumns = @JoinColumn(name = "employee_id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    @Column(nullable = false)
+    @ElementCollection()
     private Set<EmployeeSkill> skills;
 
     @ElementCollection
-    @JoinTable(name = "employee_day", joinColumns = @JoinColumn(name = "employee_id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Set<DayOfWeek> daysAvailable;
 
     public EmployeeEntity() {
@@ -66,7 +60,7 @@ public class EmployeeEntity {
         this.skills = skills;
     }
 
-    public Set<DayOfWeek> getAvailableDaysForEmployee() {
+    public Set<DayOfWeek> getAvailableDays() {
         return daysAvailable;
     }
 
