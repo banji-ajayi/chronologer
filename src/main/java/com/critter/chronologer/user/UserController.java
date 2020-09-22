@@ -87,9 +87,7 @@ public class UserController {
     @GetMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
         EmployeeEntity employee = employeeService.findEmployeeById(employeeId);
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        BeanUtils.copyProperties(employee, employeeDTO);
-        return employeeDTO;
+        return getEmployeeDTO(employee);
     }
 
     @PutMapping("/employee/{employeeId}")

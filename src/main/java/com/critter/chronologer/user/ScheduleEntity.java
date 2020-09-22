@@ -17,21 +17,18 @@ public class ScheduleEntity {
     private Long id;
 
     private LocalDate date;
-    @ElementCollection(targetClass = EmployeeSkill.class)
-    @JoinTable(name = "schedule_meeting", joinColumns = @JoinColumn(name = "schedule_meeting_id"))
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> meetingActivities;
 
-    @JoinTable(name = "schedule_employee", joinColumns = @JoinColumn(name = "schedule_emp_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    @Cascade(org.hibernate.annotations.CascadeType.MERGE)
-    @ManyToMany()
+    @ManyToMany(targetEntity = EmployeeEntity.class)
     private List<EmployeeEntity> employees;
 
     @JoinTable(name = "schedule_pet", joinColumns = @JoinColumn(name = "schedule_pet_id"),
             inverseJoinColumns = @JoinColumn(name = "pet_id"))
     @Cascade(org.hibernate.annotations.CascadeType.MERGE)
-    @ManyToMany()
+    @ManyToMany(targetEntity = PetEntity.class)
     private List<PetEntity> pets;
 
     public ScheduleEntity() {

@@ -1,5 +1,7 @@
 package com.critter.chronologer.user;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.DayOfWeek;
@@ -19,10 +21,12 @@ public class EmployeeEntity  implements Serializable {
     @ManyToMany(mappedBy = "employees")
     private List<ScheduleEntity> schedules;
 
-    @ElementCollection()
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<EmployeeSkill> skills;
 
     @ElementCollection
+    @Enumerated(EnumType.STRING)
     private Set<DayOfWeek> daysAvailable;
 
     public EmployeeEntity() {

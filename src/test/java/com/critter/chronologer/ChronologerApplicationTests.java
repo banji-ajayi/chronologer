@@ -180,9 +180,9 @@ class ChronologerApplicationTests {
 		scheduleController.createSchedule(createScheduleDTO(petList, employeeList, date, skillSet));
 		ScheduleDTO scheduleDTO = scheduleController.getAllSchedules().get(0);
 
-		Assertions.assertEquals(scheduleDTO.getActivities(), skillSet);
-		Assertions.assertEquals(scheduleDTO.getDate(), date);
 		Assertions.assertEquals(scheduleDTO.getEmployeeIds(), employeeList);
+		Assertions.assertEquals(scheduleDTO.getDate(), date);
+		Assertions.assertEquals(scheduleDTO.getActivities(), skillSet);
 		Assertions.assertEquals(scheduleDTO.getPetIds(), petList);
 	}
 

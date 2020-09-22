@@ -25,8 +25,9 @@ public class EmployeeService{
     private EmployeeRepository employeeRepository;
 
     public EmployeeEntity findEmployeeById(Long empId) {
-        return employeeRepository.findById(empId).orElseThrow(() ->
-                new NotFoundException("Fmployee for : " + empId + " is Not Found"));
+//        return employeeRepository.findById(empId).orElseThrow(() ->
+//                new NotFoundException("Fmployee for : " + empId + " is Not Found"));
+        return employeeRepository.getOne(empId);
     }
 
     public EmployeeEntity save(EmployeeEntity employee) {
